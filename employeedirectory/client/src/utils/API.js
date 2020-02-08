@@ -1,19 +1,14 @@
 
 export default {
-  // getAllEmployees: function() {
-  //   return new Promise((resolve, reject) => {
-  //     fetch("/api/Employees").then((res) => {
-  //       console.log(res);
-  //       resolve(res);
-  //     }).catch((err) => reject(err));
-  //   });
-  // },
   getAllEmployees: function() {
+    return new Promise((resolve, reject) => {
       fetch("/api/Employees")
-      .then((res) => {
-        console.log(res);
-        return res;
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        resolve(data);
       })
-      .catch((err) => {return err});
+      .catch((err) => reject(err));
+    });
   }
 };

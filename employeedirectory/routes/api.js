@@ -24,6 +24,7 @@ router.post("/api/Employees/bulk", ({ body }, res) => {
 router.get("/api/Employees", (req, res) => {
   Employees.find({})
     .then(dbEmployees => {
+      console.log(dbEmployees);
       res.json(dbEmployees);
     })
     .catch(err => {

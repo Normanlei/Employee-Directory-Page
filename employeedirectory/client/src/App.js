@@ -85,7 +85,12 @@ function App() {
 
 
   useEffect(() => {   ///would be api call here
-    console.log(API.getAllEmployees());
+    API.getAllEmployees()
+    .then(data => {
+      console.log(data);
+      employeesData = data;
+      setEmployees(employeesData);
+    })
     //setEmployees(employeesData);
   }, []);
 
