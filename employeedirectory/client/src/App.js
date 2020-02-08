@@ -6,46 +6,48 @@ import SearchForm from "./components/SearchForm";
 import Container from "./components/Container";
 import Table from "./components/Table";
 import Alert from "./components/Alert";
+import API from "./utils/API";
 
 function App() {
   const [modalShow, setModalShow] = useState(false);
-  const employeeData = [
-    {
-      name: "Norman Lei",
-      gender: "Male",
-      email: "normanlei0901@gmail.com",
-      phone: "(206)349-3478",
-      department: "Full-Stack"
-    },
-    {
-      name: "Wenfu Lei",
-      gender: "Male",
-      email: "normanlei@gmail.com",
-      phone: "(206)349-3477",
-      department: "Full-Stack"
-    },
-    {
-      name: "Yvonne Chen",
-      gender: "Female",
-      email: "xinyachen@gmail.com",
-      phone: "(206)388-3478",
-      department: "Front-end"
-    },
-    {
-      name: "Xinya Chen",
-      gender: "Female",
-      email: "yvonnechen@gmail.com",
-      phone: "(206)529-3478",
-      department: "Back-end"
-    },
-    {
-      name: "Mike Jack",
-      gender: "Male",
-      email: "jackmike@gmail.com",
-      phone: "(206)349-9191",
-      department: "Front-end"
-    },
-  ];
+  // const employeeData = [
+  //   {
+  //     name: "Norman Lei",
+  //     gender: "Male",
+  //     email: "normanlei0901@gmail.com",
+  //     phone: "(206)349-3478",
+  //     department: "Full-Stack"
+  //   },
+  //   {
+  //     name: "Wenfu Lei",
+  //     gender: "Male",
+  //     email: "normanlei@gmail.com",
+  //     phone: "(206)349-3477",
+  //     department: "Full-Stack"
+  //   },
+  //   {
+  //     name: "Yvonne Chen",
+  //     gender: "Female",
+  //     email: "xinyachen@gmail.com",
+  //     phone: "(206)388-3478",
+  //     department: "Front-end"
+  //   },
+  //   {
+  //     name: "Xinya Chen",
+  //     gender: "Female",
+  //     email: "yvonnechen@gmail.com",
+  //     phone: "(206)529-3478",
+  //     department: "Back-end"
+  //   },
+  //   {
+  //     name: "Mike Jack",
+  //     gender: "Male",
+  //     email: "jackmike@gmail.com",
+  //     phone: "(206)349-9191",
+  //     department: "Front-end"
+  //   },
+  // ];
+  let employeesData = [];
   const columns = React.useMemo(
     () => [
       {
@@ -73,7 +75,7 @@ function App() {
     ],
     []
   );
-  const [employees, setEmployees] = useState(employeeData);
+  const [employees, setEmployees] = useState(employeesData);
 
   const [data, setData] = useState({
     search: "",
@@ -83,11 +85,8 @@ function App() {
 
 
   useEffect(() => {   ///would be api call here
-    if (!data.search) return;
-    const newEmployees = employees.filter(employee =>
-      employee[data.category].includes(data.search)
-    );
-    setEmployees(newEmployees);
+    console.log(API.getAllEmployees());
+    //setEmployees(employeesData);
   }, []);
 
   const handleInputChange = event => {

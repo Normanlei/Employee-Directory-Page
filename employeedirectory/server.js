@@ -10,22 +10,13 @@ app.use(express.json());
 
 // app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/budget", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/employees", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
 
 // routes
-app.get('/api/hello', (req, res) => {
-    res.send({ express: 'Hello From Express' });
-  });
-  
-  app.post('/api/world', (req, res) => {
-    console.log(req.body);
-    res.send(
-      `I received your POST request. This is what you sent me: ${req.body.post}`,
-    );
-  });
+app.use(require("./routes/api.js"));
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
