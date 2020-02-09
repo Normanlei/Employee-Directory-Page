@@ -10,43 +10,6 @@ import API from "./utils/API";
 
 function App() {
   const [modalShow, setModalShow] = useState(false);
-  // const employeeData = [
-  //   {
-  //     name: "Norman Lei",
-  //     gender: "Male",
-  //     email: "normanlei0901@gmail.com",
-  //     phone: "(206)349-3478",
-  //     department: "Full-Stack"
-  //   },
-  //   {
-  //     name: "Wenfu Lei",
-  //     gender: "Male",
-  //     email: "normanlei@gmail.com",
-  //     phone: "(206)349-3477",
-  //     department: "Full-Stack"
-  //   },
-  //   {
-  //     name: "Yvonne Chen",
-  //     gender: "Female",
-  //     email: "xinyachen@gmail.com",
-  //     phone: "(206)388-3478",
-  //     department: "Front-end"
-  //   },
-  //   {
-  //     name: "Xinya Chen",
-  //     gender: "Female",
-  //     email: "yvonnechen@gmail.com",
-  //     phone: "(206)529-3478",
-  //     department: "Back-end"
-  //   },
-  //   {
-  //     name: "Mike Jack",
-  //     gender: "Male",
-  //     email: "jackmike@gmail.com",
-  //     phone: "(206)349-9191",
-  //     department: "Front-end"
-  //   },
-  // ];
   let employeesData = [];
   const columns = React.useMemo(
     () => [
