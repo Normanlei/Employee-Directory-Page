@@ -87,12 +87,19 @@ function App() {
   useEffect(() => {   ///would be api call here
     API.getAllEmployees()
     .then(data => {
-      console.log(data);
+      // eslint-disable-next-line
+      employeesData = data;
+      setEmployees(employeesData);
+    });
+  }, []);
+
+  const renderAllEmployee = ()=>{
+    API.getAllEmployees()
+    .then(data => {
       employeesData = data;
       setEmployees(employeesData);
     })
-    //setEmployees(employeesData);
-  }, []);
+  };
 
   const handleInputChange = event => {
     setData({ 
@@ -123,12 +130,13 @@ function App() {
 
   return (
     <Wrapper>
-      <Navbar modalShow={modalShow} setModalShow={setModalShow}></Navbar>
+      <Navbar modalShow={modalShow} setModalShow={setModalShow} reFresh = {renderAllEmployee}></Navbar>
       <Container>
         <SearchForm
           handleFormSubmit={handleFormSubmit}
           handleInputChange={handleInputChange}
           handleOptionChange={handleOptionChange}
+          renderAllEmployee = {renderAllEmployee}
         ></SearchForm>
         <Alert type="danger" style={{ opacity: data.error ? 1 : 0, marginBottom: 10 }}>
           {data.error}

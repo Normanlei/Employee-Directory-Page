@@ -1,7 +1,53 @@
-import React from "react";
+import React, {useState} from "react";
 import { Button, Modal } from 'react-bootstrap';
+import API from "../../utils/API";
 
 function AddMemberModal(props) {
+  const [name, setName] = useState();
+  const [gender, setGender] = useState("male");
+  const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
+  const [department, setDepartment] = useState("fullstack");
+
+  const handleNameChange = event => {
+    setName(event.target.value);
+  };
+
+  const handleGenderChange = event => {
+    console.log(event.target.value);
+    setGender(event.target.value);
+  };
+
+  const handleEmailChange = event => {
+    setEmail(event.target.value);
+  };
+
+  const handlePhoneChange = event => {
+    setPhone(event.target.value);
+  };
+
+  const handleDepartmentChange = event => {
+    setDepartment(event.target.value);
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    let newEmployee = {
+      name: name,
+      gender: gender,
+      email: email,
+      phone: phone,
+      department: department
+    };
+    console.log(newEmployee);
+    API.addEmployee(newEmployee)
+    .then(()=>{
+        props.reFresh();
+        props.onHide();
+    })
+  };
+
+
   return (
     <Modal
       {...props}
@@ -21,12 +67,13 @@ function AddMemberModal(props) {
             <input
               type="text"
               className="form-control"
-              placeholder="Mike Lee"
+              placeholder="First Name + Last Name"
+              onChange={handleNameChange}
             />
           </div>
           <div className="form-group">
             <label htmlFor="gender">Gender:</label>
-            <select className="gender form-control">
+            <select className="gender form-control" onChange={handleGenderChange}>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
@@ -37,6 +84,7 @@ function AddMemberModal(props) {
               type="text"
               className="form-control"
               placeholder="example@example.com"
+              onChange={handleEmailChange}
             />
           </div>
           <div className="form-group">
@@ -46,17 +94,18 @@ function AddMemberModal(props) {
               className="form-control"
               pattern = "([0-9]{3})[0-9]{3}-[0-9]{4}"
               placeholder="Format:(123)456-7890"
+              onChange={handlePhoneChange}
             />
           </div>
           <div className="form-group">
             <label htmlFor="department">Department:</label>
-            <select className="department form-control">
+            <select className="department form-control" onChange={handleDepartmentChange}>
               <option value="fullstack">Full-Stack</option>
               <option value="frontend">Front-end</option>
               <option value="backend">Back-end</option>
             </select>
           </div>
-          <button type="submit" className="btn btn-primary" >Submit</button>
+          <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
         </form>
       </Modal.Body>
       <Modal.Footer>

@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 
 
 // Depending on the current path, this component sets the "active" class on the appropriate navigation link item
-function Navbar({ modalShow, setModalShow }) {
+function Navbar({ modalShow, setModalShow, reFresh }) {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -18,6 +18,7 @@ function Navbar({ modalShow, setModalShow }) {
         </Button>
       </div>
       <AddMemberModal
+        reFresh = {reFresh}
         show={modalShow}
         onHide={() => setModalShow(false)}
       />

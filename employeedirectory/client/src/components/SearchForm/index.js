@@ -2,7 +2,7 @@ import React from "react";
 import "./style.css";
 
 // Using the datalist element we can create autofill suggestions based on the props.breeds array
-function SearchForm({ handleFormSubmit, handleInputChange, handleOptionChange}) {
+function SearchForm({ handleFormSubmit, handleInputChange, handleOptionChange, renderAllEmployee}) {
 
 
   return (
@@ -28,6 +28,7 @@ function SearchForm({ handleFormSubmit, handleInputChange, handleOptionChange}) 
         </select>
       </div>
       <button type="submit" className="btn btn-primary mx-3" onClick={handleFormSubmit}>Search</button>
+      <button type="clear" className="btn btn-danger mx-3" onClick={renderAllEmployee}>clear</button>
     </form>
   );
 }
