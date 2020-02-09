@@ -74,8 +74,8 @@ function AddMemberModal(props) {
           <div className="form-group">
             <label htmlFor="gender">Gender:</label>
             <select className="gender form-control" onChange={handleGenderChange}>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
             </select>
           </div>
           <div className="form-group">
@@ -100,9 +100,9 @@ function AddMemberModal(props) {
           <div className="form-group">
             <label htmlFor="department">Department:</label>
             <select className="department form-control" onChange={handleDepartmentChange}>
-              <option value="fullstack">Full-Stack</option>
-              <option value="frontend">Front-end</option>
-              <option value="backend">Back-end</option>
+              <option value="Full-Stack">Full-Stack</option>
+              <option value="Front-end">Front-end</option>
+              <option value="Back-end">Back-end</option>
             </select>
           </div>
           <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
