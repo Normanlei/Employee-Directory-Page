@@ -9,10 +9,12 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 //set storage engine 
 
+let ran = 0;
 const storage = multer.diskStorage({
   destination: './client/uploads/',
   filename: function(req,file,cb){
-    cb(null,file.originalname);
+    console.log(ran+file.originalname);
+    cb(null,ran+file.originalname);
   }
 });
 
@@ -23,7 +25,7 @@ const upload = multer ({
   fileFilter: function(req,file,cb){
     checkFileType(file,cb);
   }
-}).single("myImage");
+}).single(ran);
 
 function checkFileType(file,cb){
   //Allowd extention
@@ -52,6 +54,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/employees", {
 app.use(require("./routes/api.js"));
 app.post('/upload',(req,res)=>{
   upload(req,res,(err)=>{
+    ran++;
     if (err) console.log(err);
     else{
       console.log(req.file);

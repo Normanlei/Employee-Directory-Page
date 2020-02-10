@@ -10,6 +10,8 @@ function AddMemberModal(props) {
   const [department, setDepartment] = useState("fullstack");
   const [imagePath, setImagePath] = useState();
 
+  let ran = 0;
+
   const handleNameChange = event => {
     setName(event.target.value);
   };
@@ -32,8 +34,12 @@ function AddMemberModal(props) {
   };
 
   const handleImageUpload = event => {
-    const files = event.target.files;
-    setImagePath(files[0].name);
+    //const files = event.target.files;
+    const files = document.getElementById("upload").files;
+    console.log(ran+files[0].name);
+    ran++;
+    console.log(ran);
+    //setImagePath(files[0].name);
     //API.addImage(files[0]);
   };
 
@@ -117,9 +123,9 @@ function AddMemberModal(props) {
         <form action="/upload" method="POST" encType="multipart/form-data">
           <div className="form-group">
             <label htmlFor="pic">Upload Profile Image:</label>
-            <input type="file" className="form-control-file" name="myImage" onChange={handleImageUpload}></input>
+            <input type="file" className="form-control-file" name={ran} id="upload"></input>
           </div>
-          <button className="btn btn-success" type="submit">Upload</button>
+          <button className="btn btn-success" type="submit" onClick={handleImageUpload}>Upload</button>
         </form>
       </Modal.Body>
       <Modal.Footer>
