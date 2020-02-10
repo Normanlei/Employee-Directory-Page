@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Modal } from 'react-bootstrap';
 import API from "../../utils/API";
+import Alert from "../Alert";
+
 
 function AddMemberModal(props) {
   const [name, setName] = useState();
@@ -10,22 +12,29 @@ function AddMemberModal(props) {
   const [department, setDepartment] = useState("fullstack");
   const [imagePath, setImagePath] = useState();
 
+  const [data, setData] = useState({
+    error: ""
+  });
+
+
   let ran = 0;
 
   const handleNameChange = event => {
+    setData({ error: "" });
     setName(event.target.value);
   };
 
   const handleGenderChange = event => {
-    console.log(event.target.value);
     setGender(event.target.value);
   };
 
   const handleEmailChange = event => {
+    setData({error: ""});
     setEmail(event.target.value);
   };
 
   const handlePhoneChange = event => {
+    setData({error: ""});
     setPhone(event.target.value);
   };
 
@@ -36,22 +45,28 @@ function AddMemberModal(props) {
   const handleImageUpload = event => {
     //const files = event.target.files;
     const files = document.getElementById("upload").files;
-    console.log(ran+files[0].name);
+    console.log(ran + files[0].name);
+    setImagePath(ran + files[0].name);
     ran++;
     console.log(ran);
-    //setImagePath(files[0].name);
+
     //API.addImage(files[0]);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
+    if (!(name && email && phone)) {
+      setData({ error: "Please Fulfil All the Query Inputs!" });
+      return;
+    }
+    setData({ error: "" });
     let newEmployee = {
       name: name,
       gender: gender,
       email: email,
       phone: phone,
       department: department,
-      image:imagePath ? imagePath:"blank-template.jpg"
+      image: imagePath ? imagePath : "blank-template.jpg"
     };
     console.log(newEmployee);
     API.addEmployee(newEmployee)
@@ -119,6 +134,9 @@ function AddMemberModal(props) {
               <option value="Back-end">Back-end</option>
             </select>
           </div>
+          <Alert type="danger" style={{ opacity: data.error ? 1 : 0, marginBottom: 10 }}>
+            {data.error}
+          </Alert>
         </form>
         <form action="/upload" method="POST" encType="multipart/form-data">
           <div className="form-group">

@@ -52,57 +52,70 @@ function App() {
 
   useEffect(() => {   ///would be api call here
     API.getAllEmployees()
-    .then(data => {
-      // eslint-disable-next-line
-      employeesData = data;
-      setEmployees(employeesData);
-    });
+      .then(data => {
+        // eslint-disable-next-line
+        employeesData = data;
+        setEmployees(employeesData);
+      });
   }, []);
 
-  const renderAllEmployee = ()=>{
+  const renderAllEmployee = () => {
     API.getAllEmployees()
-    .then(data => {
-      employeesData = data;
-      setEmployees(employeesData);
-    })
+      .then(data => {
+        employeesData = data;
+        setEmployees(employeesData);
+      })
   };
 
   const handleInputChange = event => {
-    setData({ 
+    setData({
       search: event.target.value,
       category: data.category,
-      error: data.error
+      error: ""
     });
   };
 
   const handleOptionChange = event => {
-    setData({ 
+    setData({
       search: data.search,
       category: event.target.value,
-      error: data.error
+      error: ""
     });
   };
 
   const handleFormSubmit = event => {
     event.preventDefault();
     if (!data.search) {
+      setData({
+        search: data.search,
+        category: data.category,
+        error:"Please Enter A Valid Query!!!"
+      });
       return;
     }
     const newEmployees = employees.filter(employee =>
       employee[data.category].toLowerCase().includes(data.search.toLowerCase())
     );
+    if (newEmployees.length===0) {
+      setData({
+        search: data.search,
+        category: data.category,
+        error:"No Relevant Data Found!!!"
+      });
+      return;
+    }
     setEmployees(newEmployees);
   };
 
   return (
     <Wrapper>
-      <Navbar modalShow={modalShow} setModalShow={setModalShow} loadPage = {renderAllEmployee}></Navbar>
+      <Navbar modalShow={modalShow} setModalShow={setModalShow} loadPage={renderAllEmployee}></Navbar>
       <Container>
         <SearchForm
           handleFormSubmit={handleFormSubmit}
           handleInputChange={handleInputChange}
           handleOptionChange={handleOptionChange}
-          renderAllEmployee = {renderAllEmployee}
+          renderAllEmployee={renderAllEmployee}
         ></SearchForm>
         <Alert type="danger" style={{ opacity: data.error ? 1 : 0, marginBottom: 10 }}>
           {data.error}

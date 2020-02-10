@@ -55,13 +55,13 @@ app.use(require("./routes/api.js"));
 app.post('/upload',(req,res)=>{
   upload(req,res,(err)=>{
     ran++;
-    if (err) console.log(err);
+    if (err) alert('Error: Not A Valid File Uploaded!');
     else{
       console.log(req.file);
       if (req.file==undefined){
-        console.log(err);
+        alert('Error: No File Selected!');
       }else{
-        console.log("success");
+        alert('Success: Image File Is Uploaded!');
       }
     }
   })
