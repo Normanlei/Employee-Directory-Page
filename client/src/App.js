@@ -14,9 +14,12 @@ function App() {
   const columns = React.useMemo(
     () => [
       {
+        Header: 'Image',
+        accessor: 'image',
+      },
+      {
         Header: 'Name',
         accessor: 'name',
-
       },
 
       {
@@ -93,7 +96,7 @@ function App() {
 
   return (
     <Wrapper>
-      <Navbar modalShow={modalShow} setModalShow={setModalShow} reFresh = {renderAllEmployee}></Navbar>
+      <Navbar modalShow={modalShow} setModalShow={setModalShow} loadPage = {renderAllEmployee}></Navbar>
       <Container>
         <SearchForm
           handleFormSubmit={handleFormSubmit}

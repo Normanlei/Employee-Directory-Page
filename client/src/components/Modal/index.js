@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Button, Modal } from 'react-bootstrap';
 import API from "../../utils/API";
 
@@ -8,6 +8,7 @@ function AddMemberModal(props) {
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
   const [department, setDepartment] = useState("fullstack");
+  const [imagePath, setImagePath] = useState();
 
   const handleNameChange = event => {
     setName(event.target.value);
@@ -30,6 +31,12 @@ function AddMemberModal(props) {
     setDepartment(event.target.value);
   };
 
+  const handleImageUpload = event => {
+    const files = event.target.files;
+    setImagePath(files[0].name);
+    //API.addImage(files[0]);
+  };
+
   const handleSubmit = event => {
     event.preventDefault();
     let newEmployee = {
@@ -37,14 +44,15 @@ function AddMemberModal(props) {
       gender: gender,
       email: email,
       phone: phone,
-      department: department
+      department: department,
+      image:imagePath ? imagePath:"blank-template.jpg"
     };
     console.log(newEmployee);
     API.addEmployee(newEmployee)
-    .then(()=>{
-        props.reFresh();
+      .then(() => {
+        props.loadPage();
         props.onHide();
-    })
+      })
   };
 
 
@@ -92,7 +100,7 @@ function AddMemberModal(props) {
             <input
               type="tel"
               className="form-control"
-              pattern = "([0-9]{3})[0-9]{3}-[0-9]{4}"
+              pattern="([0-9]{3})[0-9]{3}-[0-9]{4}"
               placeholder="Format:(123)456-7890"
               onChange={handlePhoneChange}
             />
@@ -105,11 +113,18 @@ function AddMemberModal(props) {
               <option value="Back-end">Back-end</option>
             </select>
           </div>
-          <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+        </form>
+        <form action="/upload" method="POST" encType="multipart/form-data">
+          <div className="form-group">
+            <label htmlFor="pic">Upload Profile Image:</label>
+            <input type="file" className="form-control-file" name="myImage" onChange={handleImageUpload}></input>
+          </div>
+          <button className="btn btn-success" type="submit">Upload</button>
         </form>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
+        <Button onClick={handleSubmit}>Submit</Button>
       </Modal.Footer>
     </Modal>
   );
