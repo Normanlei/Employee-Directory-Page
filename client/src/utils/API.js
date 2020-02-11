@@ -21,7 +21,9 @@ export default {
         .then(data => {
           resolve(data);
         })
-        .catch((err) => reject(err));
+        .catch((err) => {
+          reject(err);
+        });
     });
   },
   addImage: function (file) {

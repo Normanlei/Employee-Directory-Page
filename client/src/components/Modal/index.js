@@ -6,13 +6,18 @@ import Alert from "../Alert";
 
 function AddMemberModal(props) {
   const [name, setName] = useState();
-  const [gender, setGender] = useState("male");
+  const [gender, setGender] = useState("Male");
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
-  const [department, setDepartment] = useState("fullstack");
+  const [department, setDepartment] = useState("Full-Stack");
   const [imagePath, setImagePath] = useState();
 
   const [data, setData] = useState({
+    error: ""
+  });
+
+  const [imagedata, setImageData] = useState({
+    success: "",
     error: ""
   });
 
@@ -29,12 +34,12 @@ function AddMemberModal(props) {
   };
 
   const handleEmailChange = event => {
-    setData({error: ""});
+    setData({ error: "" });
     setEmail(event.target.value);
   };
 
   const handlePhoneChange = event => {
-    setData({error: ""});
+    setData({ error: "" });
     setPhone(event.target.value);
   };
 
@@ -42,16 +47,6 @@ function AddMemberModal(props) {
     setDepartment(event.target.value);
   };
 
-  const handleImageUpload = event => {
-    //const files = event.target.files;
-    const files = document.getElementById("upload").files;
-    console.log(ran + files[0].name);
-    setImagePath(ran + files[0].name);
-    ran++;
-    console.log(ran);
-
-    //API.addImage(files[0]);
-  };
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -59,6 +54,7 @@ function AddMemberModal(props) {
       setData({ error: "Please Fulfil All the Query Inputs!" });
       return;
     }
+    setImageData({ success: "", error: "" });
     setData({ error: "" });
     let newEmployee = {
       name: name,
@@ -70,10 +66,39 @@ function AddMemberModal(props) {
     };
     console.log(newEmployee);
     API.addEmployee(newEmployee)
-      .then(() => {
-        props.loadPage();
-        props.onHide();
-      })
+      .then((data) => {
+        if (!data.errors) {
+          props.loadPage();
+          props.onHide();
+        } else {
+          setData({ error: data.message });
+        }
+      });
+  };
+
+  const handleSubmitImage = event => {
+    event.preventDefault();
+    fetch(event.target.action, {
+      method: 'POST',
+      encType: "multipart/form-data",
+      body: new FormData(event.target) // event.target is the form
+    }).then((resp) => {
+      return resp.json(); // or resp.text() or whatever the server sends
+    }).then((body) => {
+      console.log(body);
+      if (body.err) {
+        setImageData({ success: "", error: body.err });
+      } else {
+        setImagePath(body.name);
+        setImageData({ success: body.message, error: "" });
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+
+  const clearAlert = event => {
+    setImageData({ success: "", error: "" });
   };
 
 
@@ -134,16 +159,22 @@ function AddMemberModal(props) {
               <option value="Back-end">Back-end</option>
             </select>
           </div>
-          <Alert type="danger" style={{ opacity: data.error ? 1 : 0, marginBottom: 10 }}>
+          <Alert type="danger" style={{ display: data.error ? 'block' : 'none', marginBottom: 10 }}>
             {data.error}
           </Alert>
         </form>
-        <form action="/upload" method="POST" encType="multipart/form-data">
+        <form id="imageSubmit" action="/upload" method="POST" encType="multipart/form-data" onSubmit={handleSubmitImage}>
           <div className="form-group">
             <label htmlFor="pic">Upload Profile Image:</label>
-            <input type="file" className="form-control-file" name={ran} id="upload"></input>
+            <input type="file" className="form-control-file" name="userImage" id="upload" onChange={clearAlert}></input>
           </div>
-          <button className="btn btn-success" type="submit" onClick={handleImageUpload}>Upload</button>
+          <button className="btn btn-success" type="submit">Upload(Upload Before Submit)</button>
+          <Alert type="danger" style={{ display: imagedata.error ? 'block' : 'none', marginBottom: 10 }}>
+            {imagedata.error}
+          </Alert>
+          <Alert type="success" style={{ display: imagedata.success ? 'block' : 'none', marginBottom: 10 }}>
+            {imagedata.success}
+          </Alert>
         </form>
       </Modal.Body>
       <Modal.Footer>

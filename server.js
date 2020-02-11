@@ -9,12 +9,10 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 //set storage engine 
 
-let ran = 0;
 const storage = multer.diskStorage({
   destination: './client/uploads/',
   filename: function(req,file,cb){
-    console.log(ran+file.originalname);
-    cb(null,ran+file.originalname);
+    cb(null,file.fieldname+"-"+Date.now()+path.extname(file.originalname));
   }
 });
 
@@ -25,7 +23,7 @@ const upload = multer ({
   fileFilter: function(req,file,cb){
     checkFileType(file,cb);
   }
-}).single(ran);
+}).single("userImage");
 
 function checkFileType(file,cb){
   //Allowd extention
@@ -54,14 +52,13 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/employees", {
 app.use(require("./routes/api.js"));
 app.post('/upload',(req,res)=>{
   upload(req,res,(err)=>{
-    ran++;
-    if (err) alert('Error: Not A Valid File Uploaded!');
+    if (err) res.json({err:"Not A Valid file is Uploaded!"});
     else{
       console.log(req.file);
       if (req.file==undefined){
-        alert('Error: No File Selected!');
+        res.json({err:"No File is Uploaded!"});
       }else{
-        alert('Success: Image File Is Uploaded!');
+        res.json({message:"Image is uploaded successfully!", name:req.file.filename});
       }
     }
   })
